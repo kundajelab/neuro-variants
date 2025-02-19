@@ -1,0 +1,9 @@
+{
+    "atac.title": "domcke_2020.fetal_brain.Astrocytes_Oligodendrocytes",
+    "atac.pipeline_type": "atac",
+    "atac.genome_tsv": "gs://neuro-variants/data/pipeline_genome_data/hg19/hg19.tsv",
+    "atac.paired_end": true,
+    "atac.tas": [
+        "gs://neuro-variants/data/processed/domcke_2020/tagaligns/domcke_2020.fetal_brain.Astrocytes_Oligodendrocytes.tagAlign.gz"
+    ]
+}

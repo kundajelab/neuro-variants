@@ -1,0 +1,9 @@
+{
+    "atac.title": "trevino_2021.c8",
+    "atac.pipeline_type": "atac",
+    "atac.genome_tsv": "https://storage.googleapis.com/encode-pipeline-genome-data/genome_tsv/v4/hg38.tsv",
+    "atac.paired_end": true,
+    "atac.tas": [
+        "gs://neuro-variants/data/processed/trevino_2021/tagaligns/trevino_2021.c8.tagAlign.gz"
+    ]
+}

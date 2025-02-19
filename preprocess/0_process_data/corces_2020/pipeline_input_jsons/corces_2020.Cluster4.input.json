@@ -1,0 +1,9 @@
+{
+    "atac.title": "corces_2020.Cluster4",
+    "atac.pipeline_type": "atac",
+    "atac.genome_tsv": "https://storage.googleapis.com/encode-pipeline-genome-data/genome_tsv/v4/hg38.tsv",
+    "atac.paired_end": true,
+    "atac.tas": [
+        "gs://neuro-variants/data/processed/corces_2020/tagaligns/corces_2020.Cluster4.tagAlign.gz"
+    ]
+}

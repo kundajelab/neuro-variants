@@ -1,0 +1,9 @@
+{
+    "atac.title": "encode_2024.LV.lymphocyte.In",
+    "atac.pipeline_type": "atac",
+    "atac.genome_tsv": "https://storage.googleapis.com/encode-pipeline-genome-data/genome_tsv/v4/hg38.tsv",
+    "atac.paired_end": true,
+    "atac.tas": [
+        "gs://neuro-variants/data/processed/encode_2024/tagaligns/encode_2024.LV.lymphocyte.In.tagAlign.gz"
+    ]
+}

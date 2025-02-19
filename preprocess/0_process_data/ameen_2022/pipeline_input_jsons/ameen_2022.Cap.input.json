@@ -1,0 +1,9 @@
+{
+    "atac.title": "ameen_2022.Cap",
+    "atac.pipeline_type": "atac",
+    "atac.genome_tsv": "https://storage.googleapis.com/encode-pipeline-genome-data/genome_tsv/v4/hg38.tsv",
+    "atac.paired_end": true,
+    "atac.tas": [
+        "gs://neuro-variants/data/processed/ameen_2022/tagaligns/ameen_2022.Cap.tagAlign.gz"
+    ]
+}
