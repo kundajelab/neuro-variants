@@ -8,6 +8,7 @@ df.full=fread("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/
 
 traitUse="BMI"
 traitUse="Neuroticism"
+traitUse="Alzheimers_Bellenguez_2022"
 for (traitUse in c("BMI","Neuroticism","AFib","Alzheimers_Bellenguez_2022","CAD_Aragam_2022")) { 
   
   f = paste0("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/data/cbp/analysis/ukb_fm_gwas_binarizedpip_enrichments.",traitUse,".txt")
@@ -84,9 +85,8 @@ for (traitUse in c("BMI","Neuroticism","AFib","Alzheimers_Bellenguez_2022","CAD_
     scale_fill_manual(values=c("Fetal brain neurons" = "#E0CA70",
                                "Adult brain" = "#483FA3",
                                "Fetal brain non-neurons" = "#4D3B3B",
-                               "Fetal heart" = "#B30606",
-                               "Adult heart" = "#A34D3F",
-                               "Fetal heart" = "#852222"
+                               "Fetal heart" = "#FF8C69",
+                               "Adult heart" = "#B30606"
     )) +
     ggpubr::theme_pubr() +
     geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "red") +
@@ -98,6 +98,9 @@ for (traitUse in c("BMI","Neuroticism","AFib","Alzheimers_Bellenguez_2022","CAD_
           plot.title = element_text(hjust=0.5))
   print(g)
   dev.off()
+  
+  f=paste0("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/Mapping the regulatory effects of common and rare non-coding variants across cellular and developmental contexts in the brain and heart REVISION3/SourceData/2c_",traitUse,".csv")
+  fwrite(df[,c("cell","context_v2","FDR","log10_FDR")],f,quote = F,na = "NA",sep = ',',row.names = F,col.names = T)
   
 }
 

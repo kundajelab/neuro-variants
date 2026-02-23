@@ -26,7 +26,7 @@ variantSet="asd"
 bias="K562_bias"
 i=3  
 
-initial_data_load = function(variantSet) {
+initial_data_load = function(variantSet,remove_splicing=TRUE,impute_missing_phylop=FALSE) {
   # read dataframe
   cat("Reading data...\n")
   f=paste0("/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/data/cbp/summarize/",variantSet,".","all_dataset",".",bias,".annot2.txt")
@@ -34,8 +34,13 @@ initial_data_load = function(variantSet) {
   
   # Filter SNPs with missing PhyloP values
   cat("Filter SNPs with missing PhyloP values... \n")
-  ind = !is.na(df$phylop)
-  df = df[ind,]
+  if (impute_missing_phylop) {
+    ind <- is.na(df$phylop)
+    df[ind, "phylop"] <- mean(df[!ind, "phylop"], na.rm = TRUE)
+  } else {
+    ind = !is.na(df$phylop)
+    df = df[ind,]
+  }
   
   cat("Performing misc. filtering... \n")
   
@@ -43,9 +48,11 @@ initial_data_load = function(variantSet) {
   df$gene_distance_1.log10 = log10(df$gene_distance_1+1)
   
   # Create dummy variables for the categorical variable
-  ind = !grepl("splice",df$Consequence)
-  cat("Removing ",nrow(df) - sum(ind)," splice-related SNPs...\n")
-  df = df[ind,]
+  if (remove_splicing) {
+    ind = !grepl("splice",df$Consequence)
+    cat("Removing ",nrow(df) - sum(ind)," splice-related SNPs...\n")
+    df = df[ind,]
+  }
   
   # return data
   return(df)
@@ -159,6 +166,9 @@ FLARE_Predict = function(variantSet,i,loaded_data=NULL) {
     # Subset to chr of interest
     ind_chr_include = df$chr==paste0("chr",chrNum)
     x = as.matrix(df[ind_chr_include,cols])
+    if (ncol(x)==1) {
+      x = cbind(x,dummy=0)
+    }
     # Load model
     f = paste0("/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/pred/models/",i,".",model,".chr",chrNum,".lasso.rds")
     final_mod = readRDS(f)
@@ -182,10 +192,18 @@ FLARE_Predict = function(variantSet,i,loaded_data=NULL) {
 ################################################################################
 ################################################################################
 
-variantSet = "common"
-for (variantSet in c("asd","common","rare")) {
+variantSet = "rosmap"
+for (variantSet in c("rosmap","chd","ldsc")) {
+# for (variantSet in c("asd","common","rare")) {
+  # for (variantSet in c("chd")) {
+  # for (variantSet in c("ldsc")) {
   modelNum = 1
-  df = initial_data_load(variantSet)
+  if (variantSet=="ldsc") {
+    df = initial_data_load(variantSet,remove_splicing=FALSE,impute_missing_phylop=TRUE)
+  } else {
+    df = initial_data_load(variantSet)
+  }
+  nrow(df)
   df$FLARE_baseline <- FLARE_Predict(variantSet,modelNum,loaded_data=df)
   modelNum = 2
   df$FLARE_fb_peaks <- FLARE_Predict(variantSet,modelNum,loaded_data=df)
@@ -199,12 +217,26 @@ for (variantSet in c("asd","common","rare")) {
   df$FLARE_heart <- FLARE_Predict(variantSet,modelNum,loaded_data=df)
   modelNum = 7
   df$FLARE_ab <- FLARE_Predict(variantSet,modelNum,loaded_data=df)
+  # modelNum = 8
+  # df$FLARE_baseline_tss <- FLARE_Predict(variantSet,modelNum,loaded_data=df)
   
-  f.out = paste0("/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/pred/results/",variantSet,".FLARE.txt")
-  fwrite(df[,c("snp_id","phylop","FLARE_baseline","FLARE_fb_peaks","FLARE_fb","FLARE_brain","FLARE_all","FLARE_heart","FLARE_ab")],f.out,quote = F,na = "NA",sep = '\t',row.names = F,col.names = T)
+  # f.out = paste0("/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/pred/results/",variantSet,".FLARE.txt")
+  # fwrite(df[,c("snp_id","phylop","FLARE_baseline","FLARE_fb_peaks","FLARE_fb","FLARE_brain","FLARE_all","FLARE_heart","FLARE_ab")],f.out,quote = F,na = "NA",sep = '\t',row.names = F,col.names = T)
+  f.out = paste0("/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/pred/results/",variantSet,".FLARE.2.txt")
+  # fwrite(df[,c("snp_id","phylop","FLARE_baseline","FLARE_fb_peaks","FLARE_fb","FLARE_brain","FLARE_all","FLARE_heart","FLARE_ab","FLARE_baseline_tss","gene_distance_1")],f.out,quote = F,na = "NA",sep = '\t',row.names = F,col.names = T)
+  fwrite(df[,c("snp_id","phylop","FLARE_baseline","FLARE_fb_peaks","FLARE_fb","FLARE_brain","FLARE_all","FLARE_heart","FLARE_ab","gene_distance_1")],f.out,quote = F,na = "NA",sep = '\t',row.names = F,col.names = T)
+  if (variantSet=="rosmap") {
+    f.out = paste0("/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/pred/results/",variantSet,".FLARE.outliers.txt")
+    # fwrite(df[,c("snp_id","phylop","FLARE_baseline","FLARE_fb_peaks","FLARE_fb","FLARE_brain","FLARE_all","FLARE_heart","FLARE_ab","FLARE_baseline_tss","gene_distance_1")],f.out,quote = F,na = "NA",sep = '\t',row.names = F,col.names = T)
+    fwrite(df[,c("snp_id","chr","pos","allele1","allele2",paste0("closest_gene_",1:3),paste0("gene_distance_",1:3),"phylop","PHRED","FLARE_ab","FLARE_brain","FLARE_heart")],f.out,quote = F,na = "NA",sep = '\t',row.names = F,col.names = T)
+  }
 }
 
-cor(df[,c("phylop","FLARE_baseline","FLARE_fb_peaks","FLARE_fb","FLARE_heart","FLARE_ab")])
+df[1,c("snp_id","chr","pos","allele1","allele2",paste0("closest_gene_",1:3),paste0("gene_distance_",1:3),"phylop","PHRED","FLARE_ab","FLARE_brain","FLARE_heart")]
+
+cor(df[,c("phylop","FLARE_baseline","FLARE_fb_peaks","FLARE_fb","FLARE_heart","FLARE_ab","FLARE_baseline_tss")])
+cor(df$FLARE_baseline_tss,df$gene_distance_1)
+cor(df$FLARE_baseline_tss,df$)
 
 # Metrics for FLARE predictions:
 
@@ -218,6 +250,7 @@ print(cor(tmp$FLARE_fb,tmp$phylop))
 # chromBPnet versus peaks: 
 # ~30% improvement genome-wide
 # ~50% improvement at accessible variants
+
 
 
 

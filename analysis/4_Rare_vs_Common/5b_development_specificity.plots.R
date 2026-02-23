@@ -39,6 +39,9 @@ pdf("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/
 print(p)
 dev.off()
 
+fwrite(df,
+       "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/Mapping the regulatory effects of common and rare non-coding variants across cellular and developmental contexts in the brain and heart REVISION3/SourceData/3f.csv",quote = F,na = "NA",sep = ',',row.names = F,col.names = T)
+
 g4=ggplot(df,aes(x=s_het_1,fill=dev_spec)) + geom_density(alpha=0.3) + ggpubr::theme_pubr() +
   labs(x=expression("Gene Constraint (" * italic(s)[het]*")"),y="Density",fill="") +
   scale_fill_manual(

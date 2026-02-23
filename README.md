@@ -5,7 +5,7 @@ This repository contains all scripts for the manuscript **"Mapping the regulator
 For any questions, please contact:  
 
 Andrew Marderstein & Soumya Kundu
-📧 **andrew.marderstein@gmail.com**, **soumyak@stanford.edu**  
+📧 **mardera1@mskcc.org**, **soumyak@stanford.edu**  
 
 ---
 
@@ -32,7 +32,7 @@ These sets of scripts in the **`analysis/`** directory generate all of the resul
 
 ## 1_ChromBPNet_PreprocessingAnalysis
 
-These scripts process **chromBPNet** variant scoring outputs and compile annotation tables for downstream analyses.
+These scripts process **ChromBPNet** variant scoring outputs and compile annotation tables for downstream analyses.
 
 ### Steps:
 1. **Extract outputs**: Run `1_pull_scores.sh` to extract relevant ChromBPNet outputs.
@@ -40,7 +40,7 @@ These scripts process **chromBPNet** variant scoring outputs and compile annotat
    - `2a_model_performance.R` evaluates performance metrics.  
    - `2b_model_performance_plot.R` identifies model outliers.
 3. **Annotate variants**:  
-   - Use `3a_bed2vcf.Rare.CADD_VEP.R` or `3b_bed2vcf.ASD.CADD_VEP.R` to run **CADD** and **VEP**.
+   - Use `3a_bed2vcf.Rare.CADD_VEP.R` to run **CADD** and **VEP**.
    - Process outputs with `3c_Process_CADD_VEP.R`.
 4. **Merge results**: Run `4_mergeData.R` to integrate annotations, merge scores, and remove outliers.
 
@@ -63,7 +63,7 @@ These scripts support the manuscript sections:
 - **"Pinpointing disease-relevant variants using cell-type-specific chromatin models"**
 - **"Microglia-driven mechanisms of Alzheimer’s disease risk"**
 
-We use **chromBPnet-predicted regulatory effects** to identify candidate causal variants affecting gene regulation and disease risk.
+We use **ChromBPNet** to identify candidate causal variants affecting gene regulation and disease risk.
 
 ---
 
@@ -71,7 +71,7 @@ We use **chromBPnet-predicted regulatory effects** to identify candidate causal 
 
 These scripts correspond to:
 - **"Ultra-rare variants show larger and more shared regulatory effects than common variants"**
-- **"Fetal neurons shape selective constraint in non-coding regions"**
+- **"Specific motifs influence constraint of fetal neuron regulation"**
 
 They compare rare and common variant effects to understand the selective pressures that influence allele frequency distributions across human populations.
 
@@ -89,6 +89,15 @@ Since **PhyloP** scores are not context-specific, **FLARE** models the relations
 3. **Captures** regulatory potential across multiple cell types.
 
 [We set up a FLARE repository for the FLARE method, which can be found by clicking here.](https://github.com/drewmard/FLARE)
+
+---
+
+## 6_FLARE_extended
+
+These show additional FLARE applications, with scripts corresponding to:
+- **"FLARE prioritizes de novo non-coding mutations in congenital heart disease"**
+- **"FLARE prioritizes variants underlying expression outliers in the adult brain"**
+- **"FLARE captures common variant heritability in schizophrenia"**
 
 ---
 

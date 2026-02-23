@@ -3,6 +3,19 @@ df1 = fread("/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/ou
 df2 = fread("/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/pred/results/rare.FLARE.txt",data.table = F,stringsAsFactors = F)
 df3 = fread("/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/pred/results/common.FLARE.txt",data.table = F,stringsAsFactors = F)
 
+cor_result = cor.test(df1$phylop,df1[,"FLARE_fb"])
+cor_result
+df1.sub = subset(df1,FLARE_fb > -0.1)
+cor_result = cor.test(df1.sub$phylop,df1.sub[,"FLARE_baseline"])
+cor_result
+cor_result = cor.test(df1.sub$phylop,df1.sub[,"FLARE_fb"])
+cor_result
+cor_result = cor.test(df1.sub$phylop,df1.sub[,"FLARE_fb_peaks"])
+cor_result
+
+subset(df1,)
+
+
 predictor_lst = c("FLARE_baseline","FLARE_fb_peaks","FLARE_fb","FLARE_brain","FLARE_all","FLARE_heart","FLARE_ab")
 res.lst = list(); k=0
 for (i in 1:length(predictor_lst)) {

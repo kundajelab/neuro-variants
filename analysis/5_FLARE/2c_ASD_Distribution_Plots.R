@@ -3,9 +3,9 @@ library(data.table)
 f = paste0("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/pred/results/scores_cntnap2.txt")
 df = fread(f,data.table = F,stringsAsFactors = F)
 df = df[,-1]
-wilcox.test(df$abs_logfc.mean.c11.trevino_2021~df$Pheno)
+wilcox.test(df$FLARE_fb~df$Pheno)
 
-colnames(df) = c("Pheno","FLARE-fb","FLARE-h","PhyloP","CADD","Early RG cbp")
+colnames(df) = c("Pheno","FLARE-fb","FLARE-h","PhyloP","CADD","Early RG cbp","TSS distance")
 
 library(tidyr)
 df_long <- pivot_longer(df, cols = -Pheno, names_to = "Feature", values_to = "Value") %>% as.data.frame()
@@ -26,8 +26,11 @@ g = ggplot(df_long, aes(x = Pheno, y = Value, color = Pheno)) +
 # Print the plot
 print(g)
 
+fwrite(df_long,
+       "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/Mapping the regulatory effects of common and rare non-coding variants across cellular and developmental contexts in the brain and heart REVISION3/SourceData/4e.csv",quote = F,na = "NA",sep = ',',row.names = F,col.names = T)
+
 f.out = "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/pred/plots/scores_cntnap2.pdf"
-pdf(f.out,width = 4.81*1.3,height=2.96*1.3)
+pdf(f.out,width = 4.81*1.4,height=2.96*1.3)
 print(g)
 dev.off()
 
@@ -38,7 +41,7 @@ df = df[,-1]
 t.test(df$abs_logfc.mean.c11.trevino_2021~df$Pheno)
 t.test(df$FLARE_fb~df$Pheno)
 
-colnames(df) = c("Pheno","FLARE-fb","FLARE-h","PhyloP","CADD","Early RG cbp")
+colnames(df) = c("Pheno","FLARE-fb","FLARE-h","PhyloP","CADD","Early RG cbp","TSS distance")
 
 library(tidyr)
 df_long <- pivot_longer(df, cols = -Pheno, names_to = "Feature", values_to = "Value") %>% as.data.frame()
@@ -60,7 +63,7 @@ g = ggplot(df_long, aes(x = Pheno, y = Value, color = Pheno)) +
 print(g)
 
 f.out = "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/pred/plots/scores_sfari.pdf"
-pdf(f.out,width = 4.81*1.3,height=2.96*1.3)
+pdf(f.out,width = 4.81*1.4,height=2.96*1.3)
 print(g)
 dev.off()
 

@@ -12,11 +12,12 @@
 library(data.table)
 
 # input arguments
-variantSet="rare"
+variantSet="rosmap"
 bias="K562_bias"
 
-# for (variantSet in c("common","rare")) {
-for (variantSet in c("asd")) {
+for (variantSet in c("rosmap","chd")) {
+# for (variantSet in c("common","rare","asd","chd")) {
+    # for (variantSet in c("ldsc")) {
   
   # PhyloP:
   if (variantSet=="asd") {
@@ -26,6 +27,14 @@ for (variantSet in c("asd")) {
   } else if (variantSet=="common") {
     f="/oak/stanford/groups/smontgom/amarder/VariantPrioritization/out/1kg_variants/gt_0.05/chrALL.filter.score.v2.phylop.bed"
     #need to do
+  } else if (variantSet == "chd") {
+    # f = paste0("/oak/stanford/groups/smontgom/erobb/data/watershed/chd_snv_list.sort.all.tsv")
+    f="/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/data/variant_lists/chd_snv_list.chrALL.phylop.bed"
+  } else if (variantSet == "ldsc") {
+    # f = paste0("/oak/stanford/groups/smontgom/erobb/data/watershed/chd_snv_list.sort.all.tsv")
+    f="/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/data/variant_lists/ldsc.filtered.variants.hg38.chrALL.phylop.bed"
+  } else if (variantSet == "rosmap") {
+    f="/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/data/variant_lists/rosmap_variants.chrALL.phylop.bed"
   }
   phylop.df = fread(f,data.table = F,stringsAsFactors = F)
   colnames(phylop.df) = c("chr",'pos0',"snp_pos","snp_id","phylop")

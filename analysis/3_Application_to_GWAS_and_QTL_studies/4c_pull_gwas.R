@@ -51,5 +51,9 @@ pdf("~/Downloads/alzheimers_locus.finemap.pdf",width = 5*2,height=0.6*2)
 print(g2)
 dev.off()
 
-dprint(g2)
+print(g2)
+
+fwrite(df.mg.sub,
+       "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/Mapping the regulatory effects of common and rare non-coding variants across cellular and developmental contexts in the brain and heart REVISION3/SourceData/2d.csv",quote = F,na = "NA",sep = ',',row.names = F,col.names = T)
+
 

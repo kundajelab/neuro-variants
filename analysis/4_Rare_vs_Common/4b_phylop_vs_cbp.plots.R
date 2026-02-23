@@ -87,9 +87,8 @@ g = ggplot(subset(df,model==5), aes(x = Estimate,
   scale_color_manual(values=c("Fetal brain neurons" = "#E0CA70",
                               "Adult brain" = "#483FA3",
                               "Fetal brain non-neurons" = "#4D3B3B",
-                              "Fetal heart" = "#B30606",
-                              "Adult heart" = "#A34D3F",
-                              "Fetal heart" = "#852222"
+                              "Fetal heart" = "#FF8C69",
+                              "Adult heart" = "#B30606"
   ))
 print(g)
 dev.off()
@@ -118,9 +117,8 @@ g = ggplot(subset(df,model==5), aes(x = rank(Estimate),
   scale_color_manual(values=c("Fetal brain neurons" = "#E0CA70",
                              "Adult brain" = "#483FA3",
                              "Fetal brain non-neurons" = "#4D3B3B",
-                             "Fetal heart" = "#B30606",
-                             "Adult heart" = "#A34D3F",
-                             "Fetal heart" = "#852222"
+                             "Fetal heart" = "#FF8C69",
+                             "Adult heart" = "#B30606"
   ))
   # scale_color_manual(values=c("Fetal brain neurons (Trevino)" = "#E0CA70",
   #                             "Fetal brain neurons (Domcke)" = "#FFEC7F",
@@ -163,9 +161,8 @@ g = ggplot(subset(df,model==5), aes(y = Estimate,
   scale_fill_manual(values=c("Fetal brain neurons" = "#E0CA70",
                              "Adult brain" = "#483FA3",
                              "Fetal brain non-neurons" = "#4D3B3B",
-                             "Fetal heart" = "#B30606",
-                             "Adult heart" = "#A34D3F",
-                             "Fetal heart" = "#852222"
+                             "Fetal heart" = "#FF8C69",
+                             "Adult heart" = "#B30606"
   ));
 pdf("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/data/cbp/analysis/plots/regulatory_constraint.boxplots.pdf",width = 4.7,height=4.7)
 print(g)

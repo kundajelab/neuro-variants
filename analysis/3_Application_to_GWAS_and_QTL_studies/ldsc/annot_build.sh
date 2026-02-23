@@ -9,28 +9,48 @@ source ~/micromamba/etc/profile.d/conda.sh
 for i in {5..5}; do
   case $i in
     1)
+      ANNOTNAME="CRC"
+      INDIR="/oak/stanford/groups/akundaje/projects/CRC_finemap/data/processed/peaks/overlap"
+      build="hg38"
+      ;;
+    2)
       ANNOTNAME="ameen_2022"
       INDIR="/oak/stanford/groups/akundaje/projects/neuro-variants/data/processed/$ANNOTNAME/peaks/overlap"
       build="hg38"
       ;;
-    2)
+    3)
       ANNOTNAME="corces_2020"
       INDIR="/oak/stanford/groups/akundaje/projects/neuro-variants/data/processed/$ANNOTNAME/peaks/overlap"
       build="hg38"
       ;;
-    3)
+    4)
       ANNOTNAME="domcke_2020"
       INDIR="/oak/stanford/groups/akundaje/projects/neuro-variants/data/processed/$ANNOTNAME/peaks/overlap"
       build="hg19"
       ;;
-    4)
+    5)
       ANNOTNAME="encode_2024"
       INDIR="/oak/stanford/groups/akundaje/projects/neuro-variants/data/processed/$ANNOTNAME/peaks/overlap"
       build="hg38"
       ;;
-    5)
+    6)
+      ANNOTNAME="roussos_2024"
+      INDIR="/oak/stanford/groups/akundaje/projects/neuro-variants/data/processed/$ANNOTNAME/peaks/overlap"
+      build="hg38"
+      ;;
+    7)
       ANNOTNAME="trevino_2021"
       INDIR="/oak/stanford/groups/akundaje/projects/neuro-variants/data/processed/$ANNOTNAME/peaks/overlap"
+      build="hg38"
+      ;;
+    8)
+      ANNOTNAME="IGVFCoronaryArteriesMultiome_2024"
+      INDIR="/oak/stanford/groups/akundaje/projects/cad/data/processed/human_multiome_washu/peaks/overlap"
+      build="hg38"
+      ;;
+    9)
+      ANNOTNAME="turner_2022"
+      INDIR="/oak/stanford/groups/akundaje/projects/cad/data/processed/clint/peaks/overlap"
       build="hg38"
       ;;
     *)

@@ -14,7 +14,8 @@ model_lst = c("baseline",
               "baseline + brain peaks + cbp",
               "complete",
               "baseline + heart peaks + cbp",
-              "baseline + ab peaks + cbp"
+              "baseline + ab peaks + cbp",
+              "baseline tss only"
 )
 
 #######################
@@ -120,6 +121,8 @@ make_FLARE_input_data = function(variantSet,i,loaded_data=NULL) {
     summary_cols = grep("num_cbp_|num_peaks_|cbp_max_score_",colnames(df),value = TRUE)
     # cols = c(baseline_cols,peak_cols,cbp_cols,summary_cols)
     cols = c(baseline_cols,peak_cols,cbp_cols)
+  } else if (model=="baseline tss only") {
+    cols = "gene_distance_1.log10"
   }
   
   ##############################################################################
@@ -129,7 +132,7 @@ make_FLARE_input_data = function(variantSet,i,loaded_data=NULL) {
   # This line excludes all columns in df whose names start with int_. 
   # The code resets df in each iteration to a version of df without those columns.
   df = df[,!(colnames(df) %in% grep("^int_",colnames(df),value=TRUE))] # reset in a for loop
-  if (!(model %in% c("baseline","baseline + fb peaks"))) {
+  if (!(model %in% c("baseline","baseline + fb peaks","baseline tss only"))) {
     for (k in 1:length(peak_cols)) {
       # cat(k,"/",length(peak_cols),"\n",sep = '')
       df[,paste0("int_",k)] = df[,cbp_cols[k]] * df[,peak_cols[k]]
@@ -158,6 +161,9 @@ FLARE_Training = function(variantSet,i,loaded_data=NULL) {
     # Curate data:
     ind_chr_exclude = df$chr!=paste0("chr",chrNum)
     x = as.matrix(df[ind_chr_exclude,cols])
+    if (ncol(x)==1) {
+      x = cbind(x,dummy=0)
+    }
     y = df$phylop[ind_chr_exclude]
     
     ############################################################################
@@ -192,7 +198,7 @@ FLARE_Training = function(variantSet,i,loaded_data=NULL) {
 ##############################################################################
 
 df = initial_data_load("rare")
-for (modelNum in 1:7) {
+for (modelNum in 1:8) {
   print(modelNum)
   FLARE_Training("rare",modelNum,loaded_data=df)
 }

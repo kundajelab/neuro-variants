@@ -22,8 +22,10 @@ library(dplyr)
 library(stringr)
 
 # Loop through different variant sets to process their respective files
-for (variantSet in c("asd","rare", "common")) {
-  print(variantSet)  # Print the current variant set being processed
+# for (variantSet in c("asd","rare", "common","chd")) {
+# for (variantSet in c("ldsc")) {
+for (variantSet in c("rosmap")) {
+    print(variantSet)  # Print the current variant set being processed
   
   # Assign input file paths based on the variant set
   if (variantSet == "asd") {
@@ -32,6 +34,12 @@ for (variantSet in c("asd","rare", "common")) {
     f = paste0("/oak/stanford/groups/smontgom/erobb/data/andrew/chrALL.filter.score_input.", variantSet, ".CADD.VEP.gnomad.split.tsv")
   } else if (variantSet == "common") {
     f = paste0("/oak/stanford/groups/smontgom/erobb/data/watershed/1kg.common.gt_0.05.sort.all.tsv")
+  } else if (variantSet == "chd") {
+    f = paste0("/oak/stanford/groups/smontgom/erobb/data/watershed/chd_snv_list.sort.all.tsv")
+  } else if (variantSet == "ldsc") {
+    f = paste0("/oak/stanford/groups/smontgom/erobb/data/watershed/ldsc.filtered.variants.hg38.sort.all.tsv")
+  } else if (variantSet == "rosmap") {
+    f = paste0("/oak/stanford/groups/smontgom/erobb/data/watershed/rosmap.sort.all.tsv")
   }
   
   print("Reading data...")  # Indicate data loading step

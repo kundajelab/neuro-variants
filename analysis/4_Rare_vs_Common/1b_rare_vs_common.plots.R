@@ -94,9 +94,8 @@ for (prefix in c("rare_vs_common","rare_vs_common.peaks")) {
     scale_color_manual(values=c("Fetal brain neurons" = "#E0CA70",
                                 "Adult brain" = "#483FA3",
                                 "Fetal brain non-neurons" = "#4D3B3B",
-                                "Fetal heart" = "#B30606",
-                                "Adult heart" = "#A34D3F",
-                                "Fetal heart" = "#852222"
+                                "Fetal heart" = "#FF8C69",
+                                "Adult heart" = "#B30606"
     ))
   print(g)
   dev.off()
@@ -121,13 +120,16 @@ for (prefix in c("rare_vs_common","rare_vs_common.peaks")) {
     scale_color_manual(values=c("Fetal brain neurons" = "#E0CA70",
                                 "Adult brain" = "#483FA3",
                                 "Fetal brain non-neurons" = "#4D3B3B",
-                                "Fetal heart" = "#B30606",
-                                "Adult heart" = "#A34D3F",
-                                "Fetal heart" = "#852222"
+                                "Fetal heart" = "#FF8C69",
+                                "Adult heart" = "#B30606"
     ))
   pdf(paste0("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/data/FinalAnalysis/plots/",prefix,".2.pdf"),width = 8.6,height=3.3)
   print(g)
   dev.off()
+  
+  fwrite(df[,c("cell","context_v2","Estimate","Std. Error")],
+         "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/Mapping the regulatory effects of common and rare non-coding variants across cellular and developmental contexts in the brain and heart REVISION3/SourceData/3b.csv",quote = F,na = "NA",sep = ',',row.names = F,col.names = T)
+  
   
   #################################
   
@@ -153,9 +155,8 @@ for (prefix in c("rare_vs_common","rare_vs_common.peaks")) {
     scale_fill_manual(values=c("Fetal brain neurons" = "#E0CA70",
                                "Adult brain" = "#483FA3",
                                "Fetal brain non-neurons" = "#4D3B3B",
-                               "Fetal heart" = "#B30606",
-                               "Adult heart" = "#A34D3F",
-                               "Fetal heart" = "#852222"
+                               "Fetal heart" = "#FF8C69",
+                               "Adult heart" = "#B30606"
     ));
   pdf(paste0("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/data/FinalAnalysis/plots/",prefix,".boxplots.pdf"),width = 4.7,height=4.7)
   print(g)

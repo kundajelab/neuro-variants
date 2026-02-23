@@ -5,7 +5,7 @@ library(dplyr)
 headdir="/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/pred/results/"
 
 variantSet="asd"
-predictor_lst = c("FLARE_fb","FLARE_heart","PHRED","phylop","abs_logfc.mean.c11.trevino_2021")
+predictor_lst = c("FLARE_fb","FLARE_heart","PHRED","phylop","abs_logfc.mean.c11.trevino_2021","gene_distance_1.log10")
 f_lst = paste0("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/pred/results/",variantSet,".",predictor_lst,".extrema.txt")
 save_y_lst = list()
 for (i in 1:length(f_lst)) {
@@ -50,16 +50,22 @@ g = ggplot(save_y.all,
                               FLARE_heart = "FLARE: heart",
                               abs_logfc.mean.c11.trevino_2021 = "ChromBPnet: early RG",
                               PHRED = "CADD",
-                              phylop = "PhyloP"),
+                              phylop = "PhyloP",
+                              gene_distance_1.log10 = expression(log[10]*"(TSS distance)")),
                      values=c(FLARE_fb = "#E0CA70",
                               FLARE_heart = "#B30606",
                               abs_logfc.mean.c11.trevino_2021 = "#555599",
                               PHRED = "#48C270",
-                              phylop = "#3CC2B2"));g
+                              phylop = "#3CC2B2",
+                              gene_distance_1.log10 = "black"));g
 
 f.out = "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/pred/plots/model_compare.ci.pdf"
 pdf(f.out,width = 5.4*1.3,height=2.96*1.3)
 print(g)
 dev.off()
+
+fwrite(save_y.all,
+       "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/Mapping the regulatory effects of common and rare non-coding variants across cellular and developmental contexts in the brain and heart REVISION3/SourceData/4c.csv",quote = F,na = "NA",sep = ',',row.names = F,col.names = T)
+
 
 

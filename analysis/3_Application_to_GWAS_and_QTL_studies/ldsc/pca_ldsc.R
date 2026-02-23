@@ -17,6 +17,7 @@ trait_rng = c("ALS_Rheenen_2021",
               "MajorDepression_Meng_2024",
               "Schizophrenia_PGCWave3_2022")
 
+# for (annot in c("CRC","ameen_2022","corces_2020")) { 
 for (annot in c("ameen_2022","domcke_2020","encode_2024","trevino_2021","corces_2020")) { 
   for (trait in trait_rng) {
     i = i + 1

@@ -85,9 +85,8 @@ g = ggplot(df, aes(x = Estimate,
   scale_color_manual(values=c("Fetal brain neurons" = "#E0CA70",
                               "Adult brain" = "#483FA3",
                               "Fetal brain non-neurons" = "#4D3B3B",
-                              "Fetal heart" = "#B30606",
-                              "Adult heart" = "#A34D3F",
-                              "Fetal heart" = "#852222"
+                              "Fetal heart" = "#FF8C69",
+                              "Adult heart" = "#B30606"
   ))
 print(g)
 dev.off()
@@ -112,9 +111,8 @@ g = ggplot(df, aes(x = rank(Estimate),
   scale_color_manual(values=c("Fetal brain neurons" = "#E0CA70",
                               "Adult brain" = "#483FA3",
                               "Fetal brain non-neurons" = "#4D3B3B",
-                              "Fetal heart" = "#B30606",
-                              "Adult heart" = "#A34D3F",
-                              "Fetal heart" = "#852222"
+                              "Fetal heart" = "#FF8C69",
+                              "Adult heart" = "#B30606"
   ))
 pdf(paste0("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/data/FinalAnalysis/plots/",prefix,".2.pdf"),width = 8.6,height=3.3)
 print(g)

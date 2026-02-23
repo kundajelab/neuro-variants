@@ -17,6 +17,7 @@ trait_rng = c("ALS_Rheenen_2021",
               "MajorDepression_Meng_2024",
               "Schizophrenia_PGCWave3_2022")
 
+# for (annot in c("CRC","ameen_2022","corces_2020")) { 
 for (annot in c("ameen_2022","domcke_2020","encode_2024","trevino_2021","corces_2020")) { 
   for (trait in trait_rng) {
     i = i + 1
@@ -105,7 +106,14 @@ print(g)
 dev.off()
 
 
-subset(df,FDR < 0.1 & trait=="Anorexia_nervosa_Watson_2019")
+tmp = subset(df,FDR < 0.1 & trait=="Schizophrenia_PGCWave3_2022")
+tmp[order(tmp$FDR),]
 
+subset(meta,organ=="brain" & trait=="Alzheimers_Bellenguez_2022" & sig!="Null")
+tmp = subset(meta,organ=="brain" & trait=="Anorexia_nervosa_Watson_2019" & sig!="Null")
+tmp = subset(meta,organ=="brain" & trait=="Anorexia_nervosa_Watson_2019" & sig!="Null" & dev=="fetal")
+tmp[order(tmp$FDR),][1,]
+tmp = subset(meta,organ=="brain" & trait=="Anorexia_nervosa_Watson_2019" & sig!="Null" & dev=="adult")
+tmp[order(tmp$FDR),][1,]
 
 

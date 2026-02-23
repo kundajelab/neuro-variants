@@ -13,7 +13,7 @@ g=ggplot(df, aes(x = gene_distance_1_log10, col = set, linetype = set)) +
   scale_color_manual(values = c("Null" = "red", "Specific" = "black", "Multiple" = "#79CDF7", "Shared" = "#FDE725FF")) +
   scale_linetype_manual(values = c("Null" = "dashed", "Specific" = "solid","Multiple" = "solid", "Shared" = "solid")) +
   scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6), labels = scales::math_format(10^.x)) +
-  labs(color = "Cell-type-specificity", linetype = "Cell-type-specificity",x="Distance to TSS (bp)",y="Density") +
+  labs(color = "Cell-type-specificity", linetype = "Cell-type-specificity",x="Distance to closest TSS (bp)",y="Density") +
   guides(color = guide_legend(override.aes = list(linetype = c("dashed", "solid", "solid", "solid"), 
                                                   color = c("red", "black", "#79CDF7", "#FDE725FF"),
                                                   size = 1),nrow=2));g
@@ -39,7 +39,7 @@ g = ggplot(tmp, aes(x = Estimate,
   geom_point() +
   geom_errorbarh(height = 0.4) +
   theme_bw() +
-  labs(x = "Mean TSS distance (bp)",y="") +#, y = "Cell-type-\n-specificity") + 
+  labs(x = "Mean closest TSS distance (bp)",y="") +#, y = "Cell-type-\n-specificity") + 
   theme(plot.title = element_text(hjust = 0.5),
         axis.title.y = element_blank(),
         strip.background=element_rect(colour="black",
@@ -56,6 +56,8 @@ g = ggplot(tmp, aes(x = Estimate,
 pdf(paste0("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/data/FinalAnalysis/plots/numcbp_genedist.avg.pdf"),width = 3.5,height=2)
 print(g)
 dev.off()
+
+fwrite(tmp,"/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/Mapping the regulatory effects of common and rare non-coding variants across cellular and developmental contexts in the brain and heart REVISION3/SourceData/1c.csv",quote = F,na = "NA",sep = ',',row.names = F,col.names = T)
 
 library(dplyr)
 df$setmax = ntile(df$max_cbp, 10)
@@ -81,7 +83,7 @@ g <- ggplot(tmp, aes(
   geom_point() +
   geom_errorbarh(height = 5) +
   theme_bw() +
-  labs(x = "Mean TSS distance (bp)", y = "Decile (%)",title = "ChromBPnet Magnitude") +
+  labs(x = "Mean closest TSS distance (bp)", y = "Decile (%)",title = "ChromBPnet Magnitude") +
   theme(
     plot.title = element_text(hjust = 0.5),
     axis.title.y = element_text(size = 12),
@@ -105,6 +107,9 @@ g <- ggplot(tmp, aes(
 pdf(paste0("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/data/FinalAnalysis/plots/maxcbp_genedist.avg.pdf"),width = 6,height=2.5)
 print(g)
 dev.off()
+
+fwrite(tmp,"/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/Mapping the regulatory effects of common and rare non-coding variants across cellular and developmental contexts in the brain and heart REVISION3/SourceData/1d.csv",quote = F,na = "NA",sep = ',',row.names = F,col.names = T)
+
 
 g = ggplot(df, aes(x = df[,paste0("max_cbp")], fill = set)) +
   # geom_histogram(aes(y = ..density..), position = "identity", alpha = 0.5) +
@@ -180,7 +185,7 @@ summary(lm(phylop~set,df.sub))
 summary(lm(gene_distance_1_log10~set,df.sub))
 
 g = ggplot(df.sub,aes(x=gene_distance_1_log10,fill=set)) + geom_density(alpha=0.3) + ggpubr::theme_pubr() +
-  labs(x="Distance to TSS (bp)",y="Density",fill="") +
+  labs(x="Distance to closest TSS (bp)",y="Density",fill="") +
   scale_fill_manual(
     values=c("black","#FDE725FF")
   ) +
@@ -192,6 +197,8 @@ g = ggplot(df.sub,aes(x=gene_distance_1_log10,fill=set)) + geom_density(alpha=0.
 pdf(paste0("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/data/FinalAnalysis/plots/specific_vs_shared.distance.pdf"),width = 3,height=4)
 print(g)
 dev.off()
+
+fwrite(df.sub[,c("gene_distance_1_log10","set")],"/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/Mapping the regulatory effects of common and rare non-coding variants across cellular and developmental contexts in the brain and heart REVISION3/SourceData/1e.csv",quote = F,na = "NA",sep = ',',row.names = F,col.names = T)
 
 
 
@@ -213,7 +220,8 @@ results.df = as.data.frame(results.df)
 f = "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/data/FinalAnalysis/top1percent_motifbreakr.txt"
 fwrite(results.df,f,quote = F,na = "NA",sep = '\t',row.names = F,col.names = T)
 
-
+f = "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/data/FinalAnalysis/top1percent_motifbreakr.txt"
+results.df = fread(f,data.table = F,stringsAsFactors = F)
 res = merge(df.sub,results.df[,c("SNP_id","geneSymbol")],by.x="snp_id",by.y="SNP_id")
 tab = table(res$set,res$geneSymbol)[c("Specific","Shared"),]
 tab = t(as.matrix(tab))
@@ -256,6 +264,9 @@ g = ggplot(results_long, aes(x = gene_symbol, y = Count, fill = Condition)) +
 pdf(paste0("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/data/FinalAnalysis/plots/strongest_variants.motifbreakr.pdf"),width = 5.6*1.2,height=3*1.2)
 print(g)
 dev.off()
+
+fwrite(results_long,"/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/Mapping the regulatory effects of common and rare non-coding variants across cellular and developmental contexts in the brain and heart REVISION3/SourceData/1f.csv",quote = F,na = "NA",sep = ',',row.names = F,col.names = T)
+
 
 #############
 

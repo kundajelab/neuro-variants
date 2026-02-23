@@ -67,9 +67,8 @@ g=ggplot(df.mg,aes(x=Estimate.x,y=Estimate.y,
   scale_color_manual(values=c("Fetal brain neurons" = "#E0CA70",
                               "Adult brain" = "#483FA3",
                               "Fetal brain non-neurons" = "#4D3B3B",
-                              "Fetal heart" = "#B30606",
-                              "Adult heart" = "#A34D3F",
-                              "Fetal heart" = "#852222"
+                              "Fetal heart" = "#FF8C69",
+                              "Adult heart" = "#B30606"
   )) +
   geom_smooth(method='lm',aes(group=1),col='black',lty=3,se=F);g
 

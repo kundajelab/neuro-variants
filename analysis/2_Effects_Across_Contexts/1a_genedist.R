@@ -11,15 +11,15 @@ library(data.table)  # For fast data manipulation
 library(stringr)      # For string operations
 
 # Read a sample of the data (first 10,000 lines)
-df = fread(cmd = "head -10000 /oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/data/cbp/summarize/rare.all_dataset.K562_bias.annot2.txt",
-           data.table = F, stringsAsFactors = F,
-           select = c(
-             paste0("peak_overlap.", keep),
-             paste0("abs_logfc.mean.", keep),
-             paste0("abs_logfc.mean.pval.", keep),
-             "snp_id", "chr", "pos", "gene_distance_1", "s_het_1"
-           )
-)
+# df = fread(cmd = "head -10000 /oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/data/cbp/summarize/rare.all_dataset.K562_bias.annot2.txt",
+#            data.table = F, stringsAsFactors = F,
+#            select = c(
+#              paste0("peak_overlap.", keep),
+#              paste0("abs_logfc.mean.", keep),
+#              paste0("abs_logfc.mean.pval.", keep),
+#              "snp_id", "chr", "pos", "gene_distance_1", "s_het_1"
+#            )
+# )
 
 # Read the full dataset
 df = fread("/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/data/cbp/summarize/rare.all_dataset.K562_bias.annot2.txt",
@@ -43,8 +43,17 @@ for (i in 1:length(keep)) {
   tmp[, i][!df[, paste0("peak_overlap.", keep[i])]] = 1
 }
 
-# Count the number of significant peaks with p < 0.01
+# Count the number of significant cell types that are accessible with chrombpnet p < 0.01
 df$num_peakscbp = apply(tmp, 1, function(x) { sum(x < 0.01, na.rm = T) })
+
+# Recalculate num_peakscbp with a stricter threshold (p < 0.005)
+df$num_peakscbp005 = apply(tmp, 1, function(x) { sum(x < 0.005, na.rm = T) })
+
+# Recalculate num_peakscbp with a stricter threshold (p < 0.1)
+df$num_peakscbp1 = apply(tmp, 1, function(x) { sum(x < 0.1, na.rm = T) })
+
+# Recalculate num_peakscbp with a stricter threshold (p < 0.1)
+df$num_peakscbp05 = apply(tmp, 1, function(x) { sum(x < 0.05, na.rm = T) })
 
 # Get the maximum absolute log fold change across cell types
 df$max_cbp = apply(df[, paste0("abs_logfc.mean.", keep)], 1, max)
@@ -65,7 +74,7 @@ df.sub$set[df.sub$num_peakscbp == 0] = "Null"
 df.sub$set[df.sub$num_peakscbp == 1] = "Specific"
 
 # Convert 'set' to a factor with ordered levels
-df.sub$set = factor(df.sub$set, levels = c("Null", "Specific", "Restrained", "Multiple", "Shared"))
+df.sub$set = factor(df.sub$set, levels = c("Null", "Specific", "Multiple", "Shared"))
 
 # Compute mean max_cbp and gene_distance_1 for each 'set' category
 aggregate(max_cbp ~ set, df.sub, mean)
@@ -76,10 +85,48 @@ summary(lm(gene_distance_1_log10 ~ s_het_1 + set, df.sub))
 summary(lm(gene_distance_1_log10 ~ s_het_1 + max_cbp, df.sub))
 summary(lm(num_peakscbp ~ s_het_1 + gene_distance_1_log10 + max_cbp, df.sub))
 
+# Fit linear model with updated num_peakscbp values for sets
+summary(lm(gene_distance_1_log10 ~ set + s_het_1, df.sub))
+
+# Annotate each row based on the number of significant peaks
+df.sub$set = "Multiple"
+df.sub$set[df.sub$num_peakscbp1 >= ceiling(max(df.sub$num_peakscbp1) * 0.8)] = "Shared"
+df.sub$set[df.sub$num_peakscbp1 == 0] = "Null"
+df.sub$set[df.sub$num_peakscbp1 == 1] = "Specific"
+
+# Fit linear model with updated num_peakscbp values for sets
+summary(lm(gene_distance_1_log10 ~ set + s_het_1, df.sub))
+
+# Annotate each row based on the number of significant peaks
+df.sub$set = "Multiple"
+df.sub$set[df.sub$num_peakscbp05 >= ceiling(max(df.sub$num_peakscbp05) * 0.8)] = "Shared"
+df.sub$set[df.sub$num_peakscbp05 == 0] = "Null"
+df.sub$set[df.sub$num_peakscbp05 == 1] = "Specific"
+
+# Fit linear model with updated num_peakscbp values for sets
+summary(lm(gene_distance_1_log10 ~ set + s_het_1, df.sub))
+
+# Annotate each row based on the number of significant peaks
+df.sub$set = "Multiple"
+df.sub$set[df.sub$num_peakscbp005 >= ceiling(max(df.sub$num_peakscbp005) * 0.8)] = "Shared"
+df.sub$set[df.sub$num_peakscbp005 == 0] = "Null"
+df.sub$set[df.sub$num_peakscbp005 == 1] = "Specific"
+df.sub$set = factor(df.sub$set,levels=c("Null","Specific","Multiple","Shared"))
+
+# Fit linear model with updated num_peakscbp values for sets
+summary(lm(gene_distance_1_log10 ~ set + s_het_1, df.sub))
+
+# Reset the "set" variable to the original:
+df.sub$set = "Multiple"
+df.sub$set[df.sub$num_peakscbp >= ceiling(max(df.sub$num_peakscbp) * 0.8)] = "Shared"
+df.sub$set[df.sub$num_peakscbp == 0] = "Null"
+df.sub$set[df.sub$num_peakscbp == 1] = "Specific"
+df.sub$set = factor(df.sub$set, levels = c("Null", "Specific", "Multiple", "Shared"))
+
 # Compute mean absolute log fold change across peaks
 df.sub$mu_cbp = apply(df.sub[, paste0("abs_logfc.mean.", keep)], 1, mean)
 
-# Subset data to include only variants with at least one peak
+# Subset data to include only variants with at least one peak + chrombpnet P < 0.05
 df.sub2 = subset(df.sub, num_peakscbp > 0)
 
 # Fit linear model using max_cbp as a predictor
@@ -91,22 +138,12 @@ summary(lm(num_peakscbp ~ s_het_1 + gene_distance_1_log10 + mu_cbp, df.sub2))$co
 # Further subset to include only variants where s_het_1 is in the top 10%
 df.sub2 = subset(df.sub, s_het_1 > quantile(s_het_1, probs = 0.9))
 
-# Fit linear model for highly heterozygous variants
-summary(lm(num_peakscbp ~ s_het_1 + gene_distance_1_log10 + max_cbp, df.sub2))["max_cbp", "Pr(>|t|)"]
-
-# Recalculate num_peakscbp with a stricter threshold (p < 0.001)
-tmp = df.sub[, paste0("abs_logfc.mean.pval.", keep)]
-for (i in 1:length(keep)) {
-  tmp[, i][!df.sub[, paste0("peak_overlap.", keep[i])]] = 1
-}
-df.sub$num_peakscbp = apply(tmp, 1, function(x) { sum(x < 0.001, na.rm = T) })
-
-# Fit linear model with updated num_peakscbp values
-summary(lm(num_peakscbp ~ s_het_1 + gene_distance_1_log10 + max_cbp, df.sub))
+# Fit linear model for variants near highly constrained genes
+summary(lm(num_peakscbp ~ s_het_1 + gene_distance_1_log10 + max_cbp, df.sub2))$coef["max_cbp", "Pr(>|t|)"]
 
 # Define output file path
 f.out = "/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/data/cbp/analysis/genedist_peakonly.txt"
 
 # Save selected columns to file
-fwrite(df.sub[, c("snp_id", "chr", "pos", "set", "gene_distance_1_log10", "s_het_1", "max_cbp", "num_peakscbp")],
+fwrite(df.sub[, c("snp_id", "chr", "pos", "set", "closest_gene_1","gene_distance_1_log10", "s_het_1", "max_cbp", "num_peakscbp","num_peakscbp1","num_peakscbp05","num_peakscbp005","phylop")],
        f.out, quote = F, na = "NA", sep = '\t', row.names = F, col.names = T)

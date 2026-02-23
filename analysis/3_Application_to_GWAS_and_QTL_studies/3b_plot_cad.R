@@ -57,16 +57,15 @@ g=ggplot(df,aes(x=Estimate.x,y=Estimate.y,col=context_v2)) +
   scale_color_manual(values=c("Fetal brain neurons" = "#E0CA70",
                               "Adult brain" = "#483FA3",
                               "Fetal brain non-neurons" = "#4D3B3B",
-                              "Fetal heart" = "#B30606",
-                              "Adult heart" = "#A34D3F",
-                              "Fetal heart" = "#852222"
+                              "Fetal heart" = "#FF8C69",
+                              "Adult heart" = "#B30606"
   )) +
   theme(legend.position = 'right',
         plot.title = element_text(hjust=0.5)) +
   labs(col="")
 
 
-cor.test((df.mg$Estimate.x),y=(df.mg$Estimate.y))
+cor.test((df$Estimate.x),y=(df$Estimate.y))
 f.out = paste0("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/data/cbp/analysis/plots/gwas_enrich.cbp.cad_comparison.pdf")
 pdf(f.out,width = 5,height=3)
 print(g)

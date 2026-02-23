@@ -44,6 +44,9 @@ pdf(f,width = 2.5,height = 4)
 print(g)
 dev.off()
 
+fwrite(df[,c("Term","Adjusted.P.value.x","Adjusted.P.value.y")],
+       "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/Mapping the regulatory effects of common and rare non-coding variants across cellular and developmental contexts in the brain and heart REVISION3/SourceData/2e.csv",quote = F,na = "NA",sep = ',',row.names = F,col.names = T)
+
 
 df.sub = subset(df,Adjusted.P.value.x > 0.1 & Adjusted.P.value.y < 0.1)
 subset(df,Adjusted.P.value.x < 0.1 & Adjusted.P.value.y < 0.1)

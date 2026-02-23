@@ -71,13 +71,15 @@ g = ggplot(df, aes(x = Estimate.x,
   scale_color_manual(values=c("Fetal brain neurons" = "#E0CA70",
                               "Adult brain" = "#483FA3",
                               "Fetal brain non-neurons" = "#4D3B3B",
-                              "Fetal heart" = "#B30606",
-                              "Adult heart" = "#A34D3F",
-                              "Fetal heart" = "#852222"
+                              "Fetal heart" = "#FF8C69",
+                              "Adult heart" = "#B30606"
   ))
 pdf("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/data/cbp/analysis/plots/common_vs_rare_vs_constraint.pdf",width = 6 ,height=3.5)
 print(g)
 dev.off()
+
+fwrite(df[,c("Estimate.x","Estimate.y","context_v2","cell")],
+       "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/Mapping the regulatory effects of common and rare non-coding variants across cellular and developmental contexts in the brain and heart REVISION3/SourceData/3e.csv",quote = F,na = "NA",sep = ',',row.names = F,col.names = T)
 
 cor.test(df$Estimate.x,df$Estimate.y)
 

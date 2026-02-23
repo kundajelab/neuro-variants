@@ -4,16 +4,26 @@
 # It extracts specific columns from each file and saves the output to a designated directory.
 
 # Loop over different variant sets: 'common', 'rare', 'asd'
-for variantSet in common rare asd; do
+variantSet=chd
+# for variantSet in common rare asd; do
+# for variantSet in chd ldsc; do
+for variantSet in rosmap chd ldsc; do
 # for variantSet in asd; do # need to asd! not ran yet
 
 # Extract chr, pos, and gene columns once and store in a file
 input_file=/oak/stanford/groups/akundaje/projects/neuro-variants/variant_annotations/$variantSet/corces_2020/K562_bias/corces_2020.Cluster1.annotations.tsv
 metainfofile=/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects/output/data/cbp/summarize/$variantSet.metainfo.tsv
-cut -f1-5,28-33 $input_file > "$metainfofile"
+
+# if [[ "$variantSet" == "chd" || "$variantSet" == "ldsc" ]]; then
+if [[ "$variantSet" == "chd" || "$variantSet" == "ldsc" || "$variantSet" == "rosmap" ]]; then
+  cut -f1-5,32-37 "$input_file" > "$metainfofile"
+else
+  cut -f1-5,28-33 "$input_file" > "$metainfofile"
+fi
 
 # Loop over each dataset
 for dataset in ameen_2022 domcke_2020 encode_2024 trevino_2021 corces_2020; do
+# for dataset in domcke_2020; do
 echo $dataset
 
 # Set the 'bias' directory
@@ -51,7 +61,12 @@ cell=$(basename "$file" | sed -n "s/${prefix}\(.*\)${suffix}/\1/p")
 # Then write to the output file:
 # BEGIN {OFS="\t"} sets the output field separator to a tab character
 # {print $8, $9, $34} extracts columns 8, 9, and 34 from each line of the input file
+
+if [[ "$variantSet" == "chd" || "$variantSet" == "ldsc" || "$variantSet" == "rosmap" ]]; then
+awk 'BEGIN {OFS="\t"} {print $8, $9, $38}' $file | awk -v cell="$cell" -v dataset="$dataset" 'BEGIN{FS=OFS="\t"} NR==1{for(i=1;i<=3;i++)$i=$i"."cell"."dataset} NR>1{for(i=1;i<=3;i++)$i=$i} {print $1, $2, $3}' > $out
+else
 awk 'BEGIN {OFS="\t"} {print $8, $9, $34}' $file | awk -v cell="$cell" -v dataset="$dataset" 'BEGIN{FS=OFS="\t"} NR==1{for(i=1;i<=3;i++)$i=$i"."cell"."dataset} NR>1{for(i=1;i<=3;i++)$i=$i} {print $1, $2, $3}' > $out
+fi
 
 # Print the full path of the output file that is now saved
 echo $out

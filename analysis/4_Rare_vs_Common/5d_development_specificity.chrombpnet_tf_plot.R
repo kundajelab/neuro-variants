@@ -40,7 +40,13 @@ g = ggplot(df_long, aes(x = tf, y = value, fill = condition)) +
   theme(plot.title = element_text(hjust=0.5)) +
   scale_y_continuous(labels=abs);g
 
-f.out = "~/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/data/cbp/analysis/plots/excitatory_neurons_dev.dataset.tf.chrombpnet.pdf"
+f.out = "~/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/data/cbp/analysis/plots/excitatory_neurons_dev.dataset.tf.chrombpnet.v2.pdf"
 pdf(f.out,width = 9.3,height = 6)
 print(g)
 dev.off()
+
+fwrite(df_long,
+       "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/Mapping the regulatory effects of common and rare non-coding variants across cellular and developmental contexts in the brain and heart REVISION3/SourceData/3g.csv",quote = F,na = "NA",sep = ',',row.names = F,col.names = T)
+
+
+

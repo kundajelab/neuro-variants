@@ -1,5 +1,6 @@
 library(data.table)
 library(stringr)
+library(ggplot2)
 df2 = fread("/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/pred/results/flare_performance.txt",data.table = F,stringsAsFactors = F)
 df2$variantSet <- str_to_title(df2$variantSet)
 df2$variantSet[df2$variantSet=="Asd"] = "ASD"
@@ -19,7 +20,8 @@ p <- ggplot(df2, aes(x = model, y = r,fill=model)) +
   geom_bar(stat = "identity",col='black') +  # Bar plot
   # geom_bar(stat = "identity", fill = "skyblue",col='black') +  # Bar plot
   geom_errorbar(aes(ymin = l, ymax = h), width = 0.2) +  # Error bars
-  labs(x = "Model", y = expression("Estimated R"^2), title = "Model Comparison",fill="Model") +
+  # labs(x = "Model", y = expression("Estimated R"^2), title = "Model Comparison",fill="Model") +
+  labs(x = "Model", y = expression("PhyloP Corr. (Pred vs Obs)"), title = "Model Comparison",fill="Model") +
   theme_minimal() +
   # facet_wrap(.~variantSet,ncol = 2,scales="free_y") +
   facet_wrap(.~variantSet,ncol = 3) +
@@ -44,7 +46,7 @@ p <- ggplot(df2, aes(x = model, y = r,fill=model)) +
   theme(axis.text.x = element_blank(),
         panel.grid = element_blank()) +
   theme(plot.title = element_text(hjust=0.5));p  
-f.out = "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/pred/plots/model_r2_compare.pdf"
+f.out = "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_variant_effects/output/pred/plots/model_r_compare.pdf"
 pdf(f.out,width = 7*0.8,height=4*0.8)
 print(p)
 dev.off()

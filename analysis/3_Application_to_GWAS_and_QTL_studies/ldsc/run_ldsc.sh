@@ -13,6 +13,8 @@ ANNOTNAME=$2
 
 echo "Running trait ${trait} using annotation set $ANNOTNAME ..."
 
+# trait=CRC
+# ANNOTNAME=CRC  # <-- running a diff single cell ref? change!
 HEADDIR=/oak/stanford/groups/smontgom/amarder/chrombpnet_variant_effects
 
 # N_participants=`awk -F, -v pat=$trait '$1~pat {print $5}' /oak/stanford/groups/smontgom/amarder/neuro-variants/scripts/snps/helper_func/colocal.csv`
