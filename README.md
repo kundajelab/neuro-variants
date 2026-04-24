@@ -7,7 +7,7 @@ For any questions, please contact:
 Andrew Marderstein & Soumya Kundu
 📧 **mardera1@mskcc.org**, **soumyak@stanford.edu**  
 
-[![DOI](https://zenodo.org/badge/935193267.svg)](https://doi.org/10.5281/zenodo.19730551)
+[![DOI](https://zenodo.org/badge/19730552.svg)](https://doi.org/10.5281/zenodo.19730552)
 
 ---
 
