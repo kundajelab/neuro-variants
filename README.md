@@ -1,6 +1,6 @@
 # Marderstein*, Kundu* et al.
 
-This repository contains all scripts for the manuscript **"Mapping the regulatory effects of common and rare non-coding variants across cellular and developmental contexts in the brain and heart"** by **Marderstein, Kundu et al.**
+This repository contains all scripts for the manuscript **"Decoding common and rare non-coding variant effects across cellular and developmental contexts"** by **Marderstein, Kundu et al.**
 
 For any questions, please contact:  
 
