@@ -105,4 +105,4 @@ These show additional FLARE applications, with scripts corresponding to:
 
 # Cite
 
-Marderstein^, Kundu^, et al. Mapping the regulatory effects of common and rare non-coding variants across cellular and developmental contexts in the brain and heart.
+Marderstein^, Kundu^, et al. (2024). Decoding common and rare noncoding variant effects across cellular and developmental contexts. *Nature Genetics*. https://doi.org/10.1038/s41588-026-02619-6
